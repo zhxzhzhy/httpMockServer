@@ -114,6 +114,9 @@ func doMatchParam(mockBody map[string]interface{}, reqBodyBytes []byte) bool {
 	for fullPath, refValue := range mockBody {
 		paths := strings.Split(fullPath, "->")
 		reqValue := findValueByPath(reqBody, paths)
+		if reqValue == nil {
+			return false
+		}
 		if reflect.TypeOf(refValue) != reflect.TypeOf(reqValue) {
 			return false
 		}
@@ -125,6 +128,9 @@ func doMatchParam(mockBody map[string]interface{}, reqBodyBytes []byte) bool {
 }
 
 func findValueByPath(body interface{}, paths []string) interface{} {
+	if body == nil {
+		return nil
+	}
 	if len(paths) == 0 {
 		return nil
 	}
